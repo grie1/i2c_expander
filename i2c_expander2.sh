@@ -27,6 +27,10 @@ function ctrl_c() {
    exit 1
 }
 
+# Exit message
+echo "Ctrl+C to exit script."
+sleep 1
+
 # Message
 echo "Blinking ALL LED's"
 
