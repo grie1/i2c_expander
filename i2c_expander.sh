@@ -3,10 +3,11 @@
 # Loops through ports 0-7 turning on LED
 # https://www.diodes.com/assets/Datasheets/PI4IOE5V6408.pdf
 
-# Registers
-# 0x03 
-# 0x05
-# 0x07
+# Register Functions
+# Device I2C address: 0x43
+# 0x03 I/O Direction: 0 input, 1 output
+# 0x05 Output State: high/low: 0 low, 1 high
+# 0x07 Output High-Impedance, default on (1).  Disable to set output pin hi/low.
 
 # hex addresses from lsb to msb
 ports=("0x01" "0x02" "0x04" "0x08" "0x10" "0x20" "0x40" "0x80")
@@ -26,11 +27,21 @@ function ctrl_c() {
    exit 1
 }
 
-# Message
-echo "Blinking LED's"
+# Exit message
+echo "Ctrl+C to exit script."
+sleep 1
 
-# Set Port as output
+# Message
+echo "Blinking ALL LED's"
+
+# Set All Ports as output
 sudo i2cset -y 1 0x43 0x03 0xff 
+
+# Disable high impedance on all ports
+sudo i2cset -y 1 0x43 0x07 0x00
+sleep 2
+echo "Moving to individual port tests"
+sleep 2
 
 while true; do
 
